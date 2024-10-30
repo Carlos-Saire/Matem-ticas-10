@@ -1,21 +1,27 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-public class Launcher : MonoBehaviour
+
+public class CañonController3D : MonoBehaviour
 {
     [SerializeField] private GameObject proyectilePrefab;
     [SerializeField] private float launchModifier;
     [SerializeField] private Transform launchPoint;
-
+    [SerializeField] private bool confirmBullet;
+    [SerializeField] private float timeBullet;
     [SerializeField] private GameObject point;
     private GameObject[] pointsList;
     [SerializeField] private int pointsCount;
     [SerializeField] private float spaceBetween;
     Vector2 mousePosition;
     private Vector2 direction;
-
-
-    private void Start() {
+    private AudioSource audioSource;
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+    private void Start()
+    {
         pointsList = new GameObject[pointsCount];
         for (int i = 0; i < pointsCount; i++)
         {
@@ -23,13 +29,12 @@ public class Launcher : MonoBehaviour
         }
     }
 
-    private void Update() {
+    private void Update()
+    {
         Vector2 launchePosition = transform.position;
         Debug.Log(mousePosition);
 
-
         direction = mousePosition - launchePosition;
-        
 
         transform.right = direction;
 
@@ -42,15 +47,23 @@ public class Launcher : MonoBehaviour
     {
         mousePosition = context.ReadValue<Vector2>();
     }
-    public void Shoot(InputAction.CallbackContext context){
-        if (context.performed)
+    public void Shoot(InputAction.CallbackContext context)
+    {
+        if (context.performed && confirmBullet)
         {
             GameObject proyectile = Instantiate(proyectilePrefab, launchPoint.position, Quaternion.identity);
             proyectile.GetComponent<Rigidbody>().velocity = transform.right * launchModifier;
-        }    
+            StartCoroutine(TimeBullet());
+        }
     }
-
-    private Vector2 CurrentPosition(float t){
+    private IEnumerator TimeBullet()
+    {
+        confirmBullet = false;
+        yield return new WaitForSeconds(timeBullet);
+        confirmBullet = true;
+    }
+    private Vector2 CurrentPosition(float t)
+    {
         return (Vector2)launchPoint.position + (direction.normalized * launchModifier * t) + (Vector2)(0.5f * Physics.gravity * (t * t));
     }
 }

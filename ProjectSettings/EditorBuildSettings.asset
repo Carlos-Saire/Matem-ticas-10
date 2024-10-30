@@ -5,7 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/pepiitoTheForg.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: dbb20f33b4427004cb1c7ff8e805d75f
+  - enabled: 1
+    path: Assets/Scenes/2D/Game2D.unity
+    guid: a745ef485792c744c815c4734ebd63ae
+  - enabled: 1
+    path: Assets/Scenes/2D/Puntuacion.unity
+    guid: d49d1291e953c6d46a82baed36459e1e
   m_configObjects: {}
